@@ -3,6 +3,9 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in roo-xls.gemspec
 gemspec
 
+gem "spreadshiit", "> 0.9.0", github: 'herbertia/spreadsheet', branch: 's-v1.1.4'
+
+
 if ENV['TRAVIS']
   gem 'roo', '>= 2.0.0beta1', github: 'roo-rb/roo'
 else

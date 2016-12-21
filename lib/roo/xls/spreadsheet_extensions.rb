@@ -19,6 +19,6 @@ module Roo
   end
 end
 
-class Spreadsheet::Worksheet
+class Spreadshiit::Worksheet
   include Roo::Xls::SpreadsheetEachSkipBlanks
 end

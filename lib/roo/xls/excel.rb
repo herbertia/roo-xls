@@ -1,6 +1,6 @@
 require 'roo/xls/version'
 require 'roo/base'
-require 'spreadsheet'
+require 'spreadshiit'
 
 module Roo
   # Class for handling Excel-Spreadsheets
@@ -24,7 +24,7 @@ module Roo
       mode = options[:mode] || 'rb+'
 
       if is_stream?(filename)
-        @workbook = ::Spreadsheet.open(filename, mode)
+        @workbook = ::Spreadshiit.open(filename, mode)
       else
         file_type_check(filename, '.xls', 'an Excel', file_warning, packed)
         make_tmpdir do |tmpdir|
@@ -36,7 +36,7 @@ module Roo
           unless File.file?(@filename)
             fail IOError, "file #{@filename} does not exist"
           end
-          @workbook = ::Spreadsheet.open(filename, mode)
+          @workbook = ::Spreadshiit.open(filename, mode)
         end
       end
 
@@ -256,7 +256,7 @@ module Roo
         (0..row.size).each do |cell_index|
           cell = row.at(cell_index)
           next if cell.nil?  # skip empty cells
-          next if cell.class == ::Spreadsheet::Formula && cell.value.nil? # skip empty formula cells
+          next if cell.class == ::Spreadshiit::Formula && cell.value.nil? # skip empty formula cells
           value_type, v =
             if date_or_time?(row, cell_index)
               read_cell_date_or_time(row, cell_index)
@@ -278,8 +278,8 @@ module Roo
     # way formula stores the value
     def read_cell_content(row, idx)
       cell = row.at(idx)
-      cell = row[idx] if row[idx].class == ::Spreadsheet::Link
-      cell = cell.value if cell.class == ::Spreadsheet::Formula
+      cell = row[idx] if row[idx].class == ::Spreadshiit::Link
+      cell = cell.value if cell.class == ::Spreadshiit::Formula
       cell
     end
 
@@ -310,7 +310,7 @@ module Roo
         s = secs
         value = h * 3600 + m * 60 + s
       else
-        if row.at(idx).class == ::Spreadsheet::Formula
+        if row.at(idx).class == ::Spreadshiit::Formula
           datetime = row.send(:_datetime, cell)
         else
           datetime = row.datetime(idx)
@@ -322,7 +322,7 @@ module Roo
           value = datetime
         else
           value_type = :date
-          if row.at(idx).class == ::Spreadsheet::Formula
+          if row.at(idx).class == ::Spreadshiit::Formula
             value = row.send(:_date, cell)
           else
             value = row.date(idx)
@@ -341,7 +341,7 @@ module Roo
       when Float, Integer, Fixnum, Bignum
         value_type = :float
         value = cell.to_f
-      when ::Spreadsheet::Link
+      when ::Spreadshiit::Link
         value_type = :link
         value = cell
       when String, TrueClass, FalseClass
